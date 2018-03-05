@@ -50,35 +50,38 @@
     // traversing json data to create ul/li element
     function traverseJson(data, elementRef) {
         // first validata data object
-        if (typeof data !== 'undefined' && typeof data === 'object' && Object.keys(data).length) {
+        if (typeof data !== "undefined" && typeof data === "object" && Object.keys(data).length) {
             for (const key in data) {
-                if (typeof data[key] !== 'object') {
+                if (typeof data[key] !== "object") {
                     elementRef.appendChild(getDomElement("LI", key));                   // when value found, make li element
-                } else if (typeof data[key] === 'object') {
+                } else if (typeof data[key] === "object") {
                     const ref = elementRef.appendChild(getDomElement("UL", key));       
                     traverseJson(data[key], ref);
                 }
             }
         } else {
-            console.log('No folders and files found for exploer');
+            console.log("No folders and files found for explorer");
         }
     };
 
     // generating dom element based on its type and appending it to html
     function getDomElement(elementType, elementText){
-        var node = document.createElement(elementType);                 // Create a <li> / <ul> node
-        var textNode = document.createTextNode(elementText);            // Create a text node
+        const node = document.createElement(elementType);                 // Create a <li> / <ul> node
+        const textNode = document.createTextNode(elementText);            // Create a text node
         node.appendChild(textNode);                                     // append textNode to div
         return node;    
     }
 
-    // iniative point of application
+    // initiative point of application
     function init() {
-        // find element by id to append html inside
-        const divElement = document.getElementById('dirExplorer');
+        // first step to find element
+        const divElementRef = document.getElementById("dirExplorer");
 
-        // traversing json 
-        traverseJson(jsonData, divElement);
+        // adding root node, since explorer always have root not
+        const rootNodeRef = divElementRef.appendChild(getDomElement("UL", "EXPLORER"));
+
+        // traversing json and appending element to div
+        traverseJson(jsonData, rootNodeRef);
     }
 
     return init();
